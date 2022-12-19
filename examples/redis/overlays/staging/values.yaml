@@ -1,0 +1,4 @@
+# Staging values
+redis:
+  replica:
+    replicaCount: 5

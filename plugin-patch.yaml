@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argocd-repo-server
+spec:
+  template:
+    spec:
+      initContainers:
+        - name: helm-kustomize-plugin-setup
+          image: alpine
+          command:
+            - sh
+            - -c
+            - |
+              wget https://get.helm.sh/helm-v3.8.2-linux-amd64.tar.gz -O - | tar xz && mv linux-amd64/helm /tools/helm && chmod +x /tools/helm
+              wget https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.5.7/kustomize_v4.5.7_linux_amd64.tar.gz \
+                -O - | tar xz && mv kustomize /tools/ && chmod +x /tools/kustomize
+          volumeMounts:
+            - mountPath: /tools
+              name: helm-plugin-tools
+      containers:
+      - name: helm-kustomize-plugin
+        command: [ /var/run/argocd/argocd-cmp-server ]
+        image: alpine # Use busybox with init container or build custom docker image with required dependencies
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 999
+        volumeMounts:
+          - mountPath: /var/run/argocd
+            name: var-files
+
+          - mountPath: /home/argocd/cmp-server/plugins
+            name: plugins
+
+          - mountPath: /home/argocd/cmp-server/config/plugin.yaml
+            subPath: plugin.yaml
+            name: helm-kustomize-plugin-config
+
+          - mountPath: /var/run/argocd/helm-kustomize-plugin/generate.sh
+            subPath: generate.sh
+            name: helm-kustomize-plugin-config
+
+          - mountPath: /var/run/argocd/helm-kustomize-plugin/init.sh
+            subPath: init.sh
+            name: helm-kustomize-plugin-config
+
+          - mountPath: /usr/local/bin
+            name: helm-plugin-tools
+
+          - mountPath: /tmp
+            name: cmp-tmp
+      volumes:
+        - configMap:
+            name: helm-kustomize-plugin-config
+          name: helm-kustomize-plugin-config
+        - emptyDir: { }
+          name: helm-plugin-tools
+        - emptyDir: { }
+          name: cmp-tmp

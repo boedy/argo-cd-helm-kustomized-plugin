@@ -1,0 +1,14 @@
+# Default values
+redis:
+  usePassword: false
+  architecture: replication
+  auth:
+    enabled: false
+    sentinel: false
+  master:
+    persistence:
+      enabled: false
+  replica:
+    persistence:
+      enabled: false
+    replicaCount: 3
