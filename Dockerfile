@@ -9,3 +9,9 @@ RUN wget https://github.com/kubernetes-sigs/kustomize/releases/download/kustomiz
     && mv kustomize /usr/local/bin/kustomize  \
     && chmod +x /usr/local/bin/kustomize
 
+RUN wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 \
+    -O /usr/local/bin/jq && chmod +x /usr/local/bin/jq
+
+RUN wget https://github.com/mikefarah/yq/releases/download/v4.24.5/yq_linux_amd64 \
+    -O /usr/local/bin/yq && chmod +x /usr/local/bin/yq
+

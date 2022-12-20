@@ -14,6 +14,8 @@ spec:
             - |
               wget https://get.helm.sh/helm-v3.8.2-linux-amd64.tar.gz -O - | tar xz && mv linux-amd64/helm /tools/helm && chmod +x /tools/helm
               wget https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.5.7/kustomize_v4.5.7_linux_amd64.tar.gz \
+              wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 -O /tools/jq && chmod +x /tools/jq
+              wget https://github.com/mikefarah/yq/releases/download/v4.24.5/yq_linux_amd64 -O /tools/yq && chmod +x /tools/yq
                 -O - | tar xz && mv kustomize /tools/ && chmod +x /tools/kustomize
           volumeMounts:
             - mountPath: /tools
