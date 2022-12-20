@@ -4,6 +4,7 @@ HOME=/tmp
 if grep -q "\- \"Chart.yaml\"" ../../base/kustomization.yaml; then
   helm template \
     --release-name ${ARGOCD_APP_NAME} \
+    --include-crds \
     ../../base \
     -f ../../base/values.yaml \
     -f values.yaml > ../../base/compiled-chart.yaml
