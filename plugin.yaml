@@ -10,4 +10,4 @@ spec:
     command: [sh, /var/run/argocd/helm-kustomize-plugin/generate.sh]
   discover:
     find:
-      command: [sh, -c, find . -name values.yaml]
+      command: [sh, -c, find . -name kustomization.yaml]
